@@ -123,9 +123,11 @@ class Schedule extends React.Component {
         let weekdays = arr.filter((x) => {
             return x.day > 0 && x.day < 5
         })
+
         let weekends = arr.filter((x) => {
             return x.day > 5 || x.day === 0
         })
+        
         this.setState({
             allDates: arr,
             weekdays,
@@ -134,62 +136,37 @@ class Schedule extends React.Component {
     }
 
     getAllDates = (x) => {
-
         let num = parseInt(x)
-
         let allDates = [];
-
         let weekdays = [];
-
         let weekends = [];
-
         for (var i = 0; i < num; i++) {
-
-            let thisDate = {}
-
+            let thisTask = {}
             let tempDate = new Date(new Date().getTime() + (i * 24 * 60 * 60 * 1000));
-
-            thisDate['completed'] = (i % 2) === 0 ? true : false;
-
-            thisDate['id'] = i
-
-            thisDate['day'] = tempDate.getDay();
-
-            thisDate['dayOfWeek'] = this.state.daysOfTheWeek[tempDate.getDay()];
-
-            thisDate['date'] = this.formatDate(tempDate)
-
-            allDates.push(thisDate)
-
-            thisDate.day > 5 || thisDate.day === 0 ? weekends.push(thisDate) : weekdays.push(thisDate);
-
+            thisTask['completed'] = false;
+            thisTask['id'] = i
+            thisTask['day'] = tempDate.getDay();
+            thisTask['dayOfWeek'] = this.state.daysOfTheWeek[tempDate.getDay()];
+            thisTask['date'] = this.formatDate(tempDate)
+            allDates.push(thisTask)
+            thisTask.day > 5 || thisTask.day === 0 ? weekends.push(thisTask) : weekdays.push(thisTask);
         }
-
-
-
         this.setState({
-
             allDates,
-
             weekends,
-
             weekdays
-
         })
-
     };
 
 
 
     formatDate = (x) => {
 
-        let dd = String(x.getDate()).padStart(2, '0');
+        let dd = String(x.getDate())
 
-        let mm = String(x.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let mm = String(x.getMonth() + 1) //January is 0!
 
         let yyyy = x.getFullYear();
-
-
 
         let date = mm + '/' + dd + '/' + yyyy;
 
@@ -329,11 +306,20 @@ class Schedule extends React.Component {
 
                 render: record => (
                     <div>
-                        <Popconfirm title="Are you sure you want to delete this task?" onConfirm={() => { this.onDelete(record) }} okText="Yes" cancelText="No">
-                        < Button type="danger" shape="circle" icon="delete" size='small' style={{ marginRight: 5 }} />
+                        <Popconfirm title="Are you sure you want to delete this task?" 
+                        onConfirm={() => { this.onDelete(record) }} okText="Yes" cancelText="No"
+                        >
+                            < Button type="danger" 
+                            shape="circle" 
+                            icon="delete" 
+                            size='small' 
+                            style={{ marginRight: 5 }} />
                         </Popconfirm>
-                        < Button type="primary" shape="circle" icon="edit" size='small' style={{ marginRight: 5 }} onClick={() => { this.onEdit(record) }} />
-
+                        < Button type="primary" shape="circle" 
+                        icon="edit" 
+                        size='small' 
+                        style={{ marginRight: 5 }} onClick={() => { this.onEdit(record) }} 
+                        />
                     </div >
                 )
 
@@ -345,7 +331,13 @@ class Schedule extends React.Component {
 
                 key: "completed",
 
-                render: record => record.completed ? <Popconfirm title="Mark Incomplete?" onConfirm={()=>{this.changeTodo(record)} } okText="Yes" cancelText="No"><Icon type="check-circle" style={{ color: '#52c41a' }}/></Popconfirm> : <Popconfirm title="Mark Complete?" onConfirm={()=>{this.changeTodo(record)}} okText="Yes" cancelText="No"><Icon type="check-circle" style={{ color: '#D3D3D3' }} /></Popconfirm>
+                render: record => record.completed 
+                ? <Popconfirm title="Mark Incomplete?" onConfirm={()=>{this.changeTodo(record)} } okText="Yes" cancelText="No">
+                    <Icon type="check-circle" style={{ color: '#52c41a' }}/>
+                  </Popconfirm> 
+                : <Popconfirm title="Mark Complete?" onConfirm={()=>{this.changeTodo(record)}} okText="Yes" cancelText="No">
+                    <Icon type="check-circle" style={{ color: '#D3D3D3' }} />
+                  </Popconfirm>
 
             }
 
